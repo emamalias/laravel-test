@@ -1,6 +1,7 @@
 /node_modules
 /public/storage
 /public/hot
+!/storage/app/products.json
 /storage/*.key
 /vendor
 /.idea
