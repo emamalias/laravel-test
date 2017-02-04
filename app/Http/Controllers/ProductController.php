@@ -20,6 +20,7 @@ class ProductController extends Controller
 		$dt = \Carbon\Carbon::now();
 
 		$products[] = [
+			'id'=>str_random(40),
 			'name'=>$request->get('name'),
 			'price'=>$request->get('price'),
 			'quantity'=>$request->get('quantity'),
@@ -29,5 +30,17 @@ class ProductController extends Controller
 		File::put($path, json_encode($products));
 		
 		return $products;
+    }
+
+    public function delete(Request $request, $id) {
+    	$path = storage_path() . "/app/products.json";
+		$products = json_decode(file_get_contents($path), true); 
+
+		$key = array_search($id, array_column($products, 'id'));
+		if($key || $key==0) {
+			unset($products[$key]);
+		}
+
+    	return $products;
     }
 }

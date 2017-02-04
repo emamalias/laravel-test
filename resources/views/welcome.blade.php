@@ -15,8 +15,8 @@
                 name:'',
                 quantity:'',
                 price:''
-            };
-        };
+            }
+        }
 
         $scope.init = function() {
             $http.get('/products').then(function(response) {
@@ -29,7 +29,13 @@
                 $scope.products = response.data;
                 $scope.initProduct();
             });
-        };
+        }
+
+        $scope.delete = function(product) {
+            $http.delete('/products/' + product.id).then(function(response) {
+                $scope.products = response.data;
+            });
+        }
 
         $scope.getTotal = function(){
             var total = 0;
@@ -75,6 +81,7 @@
                     <th>Price per item</th>
                     <th>Datetime submitted</th>
                     <th>Total</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -84,10 +91,11 @@
                     <td>@{{ product.price }}</td>
                     <td>@{{ product.created | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                     <td>@{{ product.price * product.quantity }}</td>
+                    <td><a href="javascript:;" ng-click="delete(product)">Delete</a></td>
                 </tr>
             </tbody>
             <tfooter>
-                <tr colspan="5">
+                <tr colspan="6">
                     <th>Total: @{{ getTotal() }}</th>
                 </tr>
             </tfooter>
