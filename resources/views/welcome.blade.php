@@ -10,10 +10,12 @@
 
         $scope.products = [];
 
-        $scope.product = {
-            name:'',
-            quantity:'',
-            price:''
+        $scope.initProduct = function() {
+            $scope.product = {
+                name:'',
+                quantity:'',
+                price:''
+            };
         };
 
         $scope.init = function() {
@@ -25,6 +27,7 @@
         $scope.addProduct = function() {
             $http.post('/products', $scope.product).then(function(response) {
                 $scope.products = response.data;
+                $scope.initProduct();
             });
         };
 
@@ -38,6 +41,7 @@
         }
 
         $scope.init();
+        $scope.initProduct();
 
     });
 </script>
@@ -66,10 +70,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Submitted</th>
+                    <th>Product name</th>
+                    <th>Quantity in stock</th>
+                    <th>Price per item</th>
+                    <th>Datetime submitted</th>
                     <th>Total</th>
                 </tr>
             </thead>
@@ -78,7 +82,7 @@
                     <td>@{{ product.name }}</td>
                     <td>@{{ product.quantity }}</td>
                     <td>@{{ product.price }}</td>
-                    <td>@{{ product.created }}</td>
+                    <td>@{{ product.created | date:'yyyy-MM-dd HH:mm:ss' }}</td>
                     <td>@{{ product.price * product.quantity }}</td>
                 </tr>
             </tbody>
