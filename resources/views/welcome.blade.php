@@ -28,6 +28,15 @@
             });
         };
 
+        $scope.getTotal = function(){
+            var total = 0;
+            for(var i = 0; i < $scope.products.length; i++){
+                var product = $scope.products[i];
+                total += (product.price * product.quantity);
+            }
+            return total;
+        }
+
         $scope.init();
 
     });
@@ -53,22 +62,31 @@
             </div>
             <button type="submit" class="btn btn-default">Add</button>
         </form>
-
-        <table>
+        <br /><br />
+        <table class="table">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>Price</th>
+                    <th>Submitted</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="product in products">
+                <tr ng-repeat="product in products | orderBy:'created'">
                     <td>@{{ product.name }}</td>
                     <td>@{{ product.quantity }}</td>
                     <td>@{{ product.price }}</td>
+                    <td>@{{ product.created }}</td>
+                    <td>@{{ product.price * product.quantity }}</td>
                 </tr>
             </tbody>
+            <tfooter>
+                <tr colspan="5">
+                    <th>Total: @{{ getTotal() }}</th>
+                </tr>
+            </tfooter>
         </table>
     </div>
 
