@@ -49,7 +49,7 @@
 @stop
 
 @section('content')
-
+    <h1>Laravel Product Test</h1>
     <div ng-app="ProductApp" ng-controller="ProductController">
         <form ng-submit="addProduct()">
             <div class="form-group">
