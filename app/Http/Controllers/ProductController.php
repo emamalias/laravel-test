@@ -7,15 +7,19 @@ use File;
 
 class ProductController extends Controller
 {
+	protected $jsonPath;
+
+	public function __construct() {
+		$this->jsonPath = storage_path() . "/app/products.json";
+	}
+
     public function index() {
-    	$path = storage_path() . "/app/products.json";
-		$json = json_decode(file_get_contents($path), true); 
+		$json = json_decode(file_get_contents($this->jsonPath), true); 
 		return $json;
     }
 
     public function new(Request $request) {
-    	$path = storage_path() . "/app/products.json";
-		$products = json_decode(file_get_contents($path), true); 
+		$products = json_decode(file_get_contents($this->jsonPath), true); 
 
 		$dt = \Carbon\Carbon::now();
 
@@ -27,19 +31,20 @@ class ProductController extends Controller
 			'created'=>$dt->toIso8601String(),
 		];
 
-		File::put($path, json_encode($products));
+		File::put($this->jsonPath, json_encode($products));
 		
 		return $products;
     }
 
     public function delete(Request $request, $id) {
-    	$path = storage_path() . "/app/products.json";
-		$products = json_decode(file_get_contents($path), true); 
+		$products = json_decode(file_get_contents($this->jsonPath), true); 
 
 		$key = array_search($id, array_column($products, 'id'));
 		if($key || $key==0) {
 			unset($products[$key]);
 		}
+
+		File::put($this->jsonPath, json_encode($products));
 
     	return $products;
     }
